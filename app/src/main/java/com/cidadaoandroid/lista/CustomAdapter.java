@@ -107,7 +107,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
             if(mRecyclerViewOnClickListenerHack != null){
                 try {
-                    YoYo.with(Techniques.FadeOutRight)
+                    YoYo.with(Techniques.FadeIn)
                             .duration(500)
                             .playOn(v.findViewById(R.id.cv));
                 }catch (Exception e){

@@ -2,16 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="7dp"
     tools:context=".principal.MainActivity">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,7 +29,7 @@
                 android:layout_alignParentTop="true"
                 android:text="PREFEITURA DE CUITÉ"
                 android:textColor="@color/colorPrimary"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -35,37 +38,48 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_municipio"
                 android:text="convênio"
-                android:textSize="18sp" />
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/text_municipio"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/data_inicio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingTop="5dp"
+                    android:text="Inicio - 12/10/2008"
+                    android:textColor="@color/colorFeatured"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/data_fim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="Fim - 12/10/2010"
+                    android:textColor="@color/colorFeatured"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/title_convenio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/type_convenio"
-                android:paddingTop="5dp"
+                android:layout_toLeftOf="@+id/linear"
                 android:text="Repase de Verba para Construção da Escola Municipal Índio Piragibe"
                 android:textColor="@color/colorAzul"
-                android:textSize="20sp" />
-            />
+                android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/data_inicio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title_convenio"
-                android:paddingTop="5dp"
-                android:text="Inicio - 12/10/2008"
-                android:textColor="@color/colorFeatured"
-                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/data_fim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/data_inicio"
-                android:text="Fim - 12/10/2010"
-                android:textColor="@color/colorFeatured"
-                android:textSize="18sp" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

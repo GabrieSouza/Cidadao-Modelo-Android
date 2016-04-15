@@ -1,6 +1,7 @@
 package com.cidadaoandroid.principal;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +24,8 @@ import com.cidadaoandroid.tasks.BuscaInter;
 import com.cidadaoandroid.tasks.IdPropInter;
 import com.cidadaoandroid.tasks.TarefaBusca;
 import com.cidadaoandroid.tasks.TarefaIdProp;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -30,6 +33,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +64,14 @@ public class MainActivity extends AppCompatActivity implements BuscaInter, IdPro
         setSupportActionBar(toolbar);
 
         convenios = new ArrayList<>();
-        List<Municipio> municipios = getIntent().getParcelableArrayListExtra("municipios");
-        String cidade = getIntent().getStringExtra("cidade");
+        Gson gson = new Gson();
+        String json = getSharedPreferences("municipio", Context.MODE_PRIVATE).getString("municipios", "");
+        Type listType = new TypeToken<ArrayList<Municipio>>() {
+        }.getType();
+        ArrayList<Municipio> obj = gson.fromJson(json, listType);
+
+        List<Municipio> municipios = obj;
+        String cidade = getSharedPreferences("municipio", Context.MODE_PRIVATE).getString("cidade", "");
 
         municipio = achaMunicipio(municipios, cidade);
 

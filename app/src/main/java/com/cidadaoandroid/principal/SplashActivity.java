@@ -22,10 +22,8 @@ import com.cidadaoandroid.entidades.Municipio;
 import com.cidadaoandroid.tasks.MunicipioInter;
 import com.cidadaoandroid.tasks.TarefaMunicipio;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,15 +82,7 @@ public class SplashActivity extends Activity implements Runnable, MunicipioInter
             Intent intent;
             intent = new Intent(SplashActivity.this,MainActivity.class);
 
-            Gson gson = new Gson();
-            String json = getSharedPreferences("municipio", Context.MODE_PRIVATE).getString("municipios", "");
-            Type listType = new TypeToken<ArrayList<Municipio>>() {
-            }.getType();
-            ArrayList<Municipio> obj = gson.fromJson(json, listType);
-            Log.e("PREF", json);
-            Log.e("PREF2", getSharedPreferences("municipio", Context.MODE_PRIVATE).getString("cidade", ""));
-            intent.putExtra("cidade", getSharedPreferences("municipio", Context.MODE_PRIVATE).getString("cidade", ""));
-            intent.putExtra("municipios", obj);
+
             startActivity(intent);
             finish();
             overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);

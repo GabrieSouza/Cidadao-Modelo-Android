@@ -48,13 +48,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.municipio.setText(String.valueOf(convenios.get(position).getProponente()));
         holder.convenio.setText(convenios.get(position).getModalidade());
-        holder.descricao.setText(convenios.get(position).getObjeto_resumido());
+        if (convenios.get(position).getObjeto_resumido().length() < 40) {
+            holder.descricao.setText(convenios.get(position).getObjeto_resumido());
+        } else {
+            holder.descricao.setText(convenios.get(position).getObjeto_resumido().substring(0, 40) + "...");
+        }
         //SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(convenios.get(position).getData_inicio_vigencia());
-            holder.ini_data.setText(new SimpleDateFormat("dd/MM/yyyy").format(date));
+            holder.ini_data.setText("Inicio - " + new SimpleDateFormat("dd/MM/yyyy").format(date));
             date = new SimpleDateFormat("yyyy-MM-dd").parse(convenios.get(position).getData_fim_vigencia());
-            holder.fim_data.setText(new SimpleDateFormat("dd/MM/yyyy").format(date));
+            holder.fim_data.setText("Fim - " + new SimpleDateFormat("dd/MM/yyyy").format(date));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -103,7 +107,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
             if(mRecyclerViewOnClickListenerHack != null){
                 try {
-                    YoYo.with(Techniques.StandUp)
+                    YoYo.with(Techniques.FadeOutRight)
                             .duration(500)
                             .playOn(v.findViewById(R.id.cv));
                 }catch (Exception e){

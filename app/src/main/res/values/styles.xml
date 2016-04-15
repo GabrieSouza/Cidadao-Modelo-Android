@@ -12,7 +12,7 @@
 
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColor">@color/primary</item>
         <item name="android:textStyle">bold</item>
     </style>
 

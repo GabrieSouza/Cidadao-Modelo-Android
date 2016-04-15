@@ -62,6 +62,8 @@ public class VizualizarConvenio extends AppCompatActivity {
         galeria.setColorPressedResId(R.color.primary);
         galeria.setLabelColors(R.color.primary, R.color.colorAccent, R.color.md_black_1000);
 
+        IconicsImageView imageConvenio = (IconicsImageView) findViewById(R.id.image_convenio);
+        imageConvenio.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_picture_o).color(ContextCompat.getColor(this, R.color.accent)).sizeDp(60));
         IconicsImageView imageCurti = (IconicsImageView) findViewById(R.id.curtir);
         imageCurti.setIcon(FontAwesome.Icon.faw_thumbs_o_up);
         IconicsImageView imageDenun = (IconicsImageView) findViewById(R.id.denuncia);
@@ -83,8 +85,6 @@ public class VizualizarConvenio extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        System.out.println(duration.getStandardDays());
-        System.out.println(convenios.getData_fim_vigencia());
         int perc = (int) ((duration.getStandardDays()*100)/duration1.getStandardDays());
         Log.e("DATEMILLIS", String.valueOf(duration1.getStandardDays()));
         Log.e("PORCENTAGEM", String.valueOf(perc));

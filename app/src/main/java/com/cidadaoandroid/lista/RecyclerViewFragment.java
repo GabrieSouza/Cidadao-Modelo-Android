@@ -31,8 +31,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cidadaoandroid.R;
-import com.cidadaoandroid.principal.VizualizarConvenio;
 import com.cidadaoandroid.entidades.Convenios;
+import com.cidadaoandroid.entidades.Municipio;
+import com.cidadaoandroid.principal.VizualizarConvenio;
+import com.cidadaoandroid.tasks.BuscaInter;
+import com.cidadaoandroid.tasks.IdPropInter;
 import com.cidadaoandroid.tasks.TarefaPost;
 
 import java.util.ArrayList;
@@ -40,106 +43,23 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
-public class RecyclerViewFragment extends Fragment implements RecyclerViewOnClickListenerHack {
+public class RecyclerViewFragment extends Fragment implements RecyclerViewOnClickListenerHack, IdPropInter, BuscaInter {
 
     private RecyclerView mRecyclerView;
-    private List<Convenios> convenios;
+    private ArrayList<Convenios> convenios;
     private CustomAdapter adapter;
+    private Municipio municipio;
 
     public static boolean verificaConexao(Context context) {
         boolean conectado;
         ConnectivityManager conectivtyManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (conectivtyManager.getActiveNetworkInfo() != null
+        conectado = conectivtyManager.getActiveNetworkInfo() != null
                 && conectivtyManager.getActiveNetworkInfo().isAvailable()
-                && conectivtyManager.getActiveNetworkInfo().isConnected()) {
-            conectado = true;
-        } else {
-            conectado = false;
-        }
+                && conectivtyManager.getActiveNetworkInfo().isConnected();
         return conectado;
     }
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        convenios = new ArrayList<>();
-        convenios = getArguments().getParcelableArrayList("convenios");
-        Log.e("ENTROUCre", String.valueOf(convenios.size()));
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_list,container,false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.list_rec);
-        mRecyclerView.setHasFixedSize(true);
-            
-        if (!hasInternetAccess(getActivity())){
-                Log.e("CONEXAO","noConnection");
-                View view_pro = inflater.inflate(R.layout.progress,container,false);
-                return view_pro;
-            }
-
-
-       /* mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                CustomAdapter adapter = (CustomAdapter) mRecyclerView.getAdapter();
-                List<Convenios> auxId;
-                if (newState== RecyclerView.SCROLL_STATE_IDLE){
-                    if (convenios.size() == llm.findLastVisibleItemPosition() + 1){
-                        if(getTag()!=null){
-                            if (getTag().contains("pesquisa")){
-                                String pes[] = getTag().split(Pattern.quote(","));
-                                auxId = buscarEstCid(mRecyclerView.getContext());
-                            }else{
-                                String res[] = getTag().split(Pattern.quote(","));
-                                auxId = buscarEstCid(mRecyclerView.getContext());
-                            }
-                            for (int i = 0; i < auxId.size(); i++) {
-                                adapter.addListItem(auxId.get(i),convenios.size());
-                            }
-                        }
-
-                    }
-                }
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });*/
-
-        final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        //llm.setOrientation(LinearLayoutManager.VERTICAL);
-
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(llm);
-
-        adapter = new CustomAdapter(getContext(), convenios);
-        adapter.setRecyclerViewOnClickListenerHack(this);
-        mRecyclerView.setAdapter(adapter);
-
-        return view;
-    }
-
-
-
-    @Override
-    public void onClickListener(View view, int position) {
-        Log.e("BUNDLE",convenios.get(position).getProponente());
-        Intent intent = new Intent(getContext(), VizualizarConvenio.class);
-        intent.putExtra("convenio",convenios.get(position));
-        startActivity(intent);
-    }
-
-
-    public static boolean hasInternetAccess(Context context){
+    public static boolean hasInternetAccess(Context context) {
         Boolean resultado = null;
         try {
             resultado = new TarefaPost(context).execute().get();
@@ -149,6 +69,94 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewOnClic
             e.printStackTrace();
         }
         return resultado;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        convenios = new ArrayList<>();
+        convenios = getArguments().getParcelableArrayList("convenios");
+        //Log.e("ENTROUCre", String.valueOf(convenios.size()));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (!hasInternetAccess(getActivity())) {
+            Log.e("CONEXAO", "noConnection");
+            return inflater.inflate(R.layout.progress, container, false);
+        }
+        final View view = inflater.inflate(R.layout.fragment_list,container,false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.list_rec);
+        mRecyclerView.setHasFixedSize(true);
+/* List<Municipio> municipios = getActivity().getIntent().getParcelableArrayListExtra("municipios");
+        String cidade = getActivity().getIntent().getStringExtra("cidade");
+
+        municipio = MainActivity.achaMunicipio(municipios,cidade);*/
+
+       /* mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                CustomAdapter adapter = (CustomAdapter) mRecyclerView.getAdapter();
+                List<Convenios> auxId;
+                    if (convenios.size() == llm.findLastVisibleItemPosition() + 1){
+                        for (int i = 0; i < auxId.size(); i++) {
+                            Log.e("Nome",auxId.get(i).getModalidade());
+                            adapter.addListItem(auxId.get(i),convenios.size());
+                        }
+                    }
+            }
+        });*/
+
+        final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        //llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setLayoutManager(llm);
+        //new TarefaIdProp(RecyclerViewFragment.this,getActivity()).execute(String.valueOf(municipio.getId()));
+
+        adapter = new CustomAdapter(getContext(), convenios);
+        adapter.setRecyclerViewOnClickListenerHack(this);
+        mRecyclerView.setAdapter(adapter);
+
+        return view;
+    }
+
+    public String[] arrayId(Municipio municipio, int ini) {
+        String[] ids = new String[20];
+        for (int i = ini; i < ini + 20; i++) {
+            for (int j = 0; j < 20 && i < municipio.getId_proponentes().size(); j++) {
+                ids[j] = municipio.getId_proponentes().get(i);
+            }
+        }
+        return ids;
+    }
+
+    @Override
+    public void onClickListener(View view, int position) {
+        Log.e("BUNDLE",convenios.get(position).getProponente());
+        Intent intent = new Intent(getContext(), VizualizarConvenio.class);
+        intent.putExtra("convenio",convenios.get(position));
+        startActivity(intent);
+    }
+
+    @Override
+    public void depoisIdProps(List<String> id_prop) {
+        municipio.setId_proponentes(id_prop);
+        //TarefaBusca tarefaBusca = new TarefaBusca(RecyclerViewFragment.this.getActivity(),convenios,RecyclerViewFragment.this,0);
+        //tarefaBusca.execute(id_prop.toArray(new String[id_prop.size()]));
+    }
+
+    @Override
+    public void depoisEvent(ArrayList<Convenios> events) {
+        convenios = events;
     }
     /*public static List<Convenios> buscarEstCid(Context context){
         List<Convenios> list = null;

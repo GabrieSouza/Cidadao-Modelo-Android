@@ -14,6 +14,9 @@ import com.cidadaoandroid.entidades.Convenios;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,9 +46,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.iv.setText(String.valueOf(convenios.get(position).getId()));
-        holder.textView.setText(convenios.get(position).getModalidade());
-        holder.sub.setText(convenios.get(position).getJustificativa_resumida());
+        holder.municipio.setText(String.valueOf(convenios.get(position).getProponente()));
+        holder.convenio.setText(convenios.get(position).getModalidade());
+        holder.descricao.setText(convenios.get(position).getObjeto_resumido());
+        //SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(convenios.get(position).getData_inicio_vigencia());
+            holder.ini_data.setText(new SimpleDateFormat("dd/MM/yyyy").format(date));
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(convenios.get(position).getData_fim_vigencia());
+            holder.fim_data.setText(new SimpleDateFormat("dd/MM/yyyy").format(date));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -68,16 +81,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         this.mRecyclerViewOnClickListenerHack = r;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView textView;
-        private TextView sub;
-        private TextView iv;
+        private TextView municipio;
+        private TextView convenio;
+        private TextView descricao;
+        private TextView ini_data;
+        private TextView fim_data;
 
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
-            textView = (TextView) v.findViewById(R.id.textView);
-            sub = (TextView) v.findViewById(R.id.subtittle);
-            iv = (TextView) v.findViewById(R.id.iv1);
+            municipio = (TextView) v.findViewById(R.id.text_municipio);
+            convenio = (TextView) v.findViewById(R.id.type_convenio);
+            descricao = (TextView) v.findViewById(R.id.title_convenio);
+            ini_data = (TextView) v.findViewById(R.id.data_inicio);
+            fim_data = (TextView) v.findViewById(R.id.data_fim);
 
         }
 
@@ -88,7 +105,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 try {
                     YoYo.with(Techniques.StandUp)
                             .duration(500)
-                            .playOn(v.findViewById(R.id.rl_item));
+                            .playOn(v.findViewById(R.id.cv));
                 }catch (Exception e){
                     Log.e("Error:","Animacao");
                 }

@@ -10,14 +10,6 @@ import java.util.List;
  */
 public class Municipio implements Parcelable{
 
-    private String nome;
-    private List<String> id_proponentes;
-
-    protected Municipio(Parcel in) {
-        nome = in.readString();
-        id_proponentes = in.createStringArrayList();
-    }
-
     public static final Creator<Municipio> CREATOR = new Creator<Municipio>() {
         @Override
         public Municipio createFromParcel(Parcel in) {
@@ -29,6 +21,26 @@ public class Municipio implements Parcelable{
             return new Municipio[size];
         }
     };
+    private int id;
+    private String nome;
+    private List<String> id_proponentes;
+
+    public Municipio() {
+    }
+
+    protected Municipio(Parcel in) {
+        id = in.readInt();
+        nome = in.readString();
+        id_proponentes = in.createStringArrayList();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -53,6 +65,7 @@ public class Municipio implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(nome);
         dest.writeStringList(id_proponentes);
     }

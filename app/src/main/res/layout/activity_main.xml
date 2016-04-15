@@ -1,80 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".principal.MainActivity"
-    android:background="@drawable/bg_interno">
+    android:background="@mipmap/bg_interno"
+    android:fitsSystemWindows="true"
+    tools:context=".principal.MainActivity">
 
-    <android.support.v7.widget.CardView
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cv"
-        >
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:elevation="2dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"></android.support.v7.widget.Toolbar>
 
-            >
+    </android.support.design.widget.AppBarLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_municipio"
-                android:layout_alignParentTop="true"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:text="PREFEITURA DE CUITÉ"
-                android:textColor="@color/colorPrimary"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/type_convenio"
-                android:layout_below="@+id/text_municipio"
-                android:text="convênio"
-                android:textSize="18sp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/title_convenio"
-                android:textColor="@color/colorAzul"
-                android:layout_below="@+id/type_convenio"
-                android:text="Repase de Verba para Construção da Escola Municipal Índio Piragibe"
-                android:textSize="20sp"
-                android:paddingTop="5dp"
-                />
-            />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/data_inicio"
-                android:layout_below="@+id/title_convenio"
-                android:text="Inicio - 12/10/2008"
-                android:textSize="18sp"
-                android:paddingTop="5dp"
-                android:textColor="@color/colorAccent"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/data_fim"
-                android:layout_below="@+id/data_inicio"
-                android:text="Fim - 12/10/2010"
-                android:textSize="18sp"
-                android:textColor="@color/colorAccent"
-                />
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</android.support.design.widget.CoordinatorLayout>

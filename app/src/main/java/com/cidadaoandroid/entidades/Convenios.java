@@ -7,6 +7,17 @@ import android.os.Parcelable;
  * Created by gabri on 22/03/2016.
  */
 public class Convenios implements Parcelable{
+    public static final Creator<Convenios> CREATOR = new Creator<Convenios>() {
+        @Override
+        public Convenios createFromParcel(Parcel in) {
+            return new Convenios(in);
+        }
+
+        @Override
+        public Convenios[] newArray(int size) {
+            return new Convenios[size];
+        }
+    };
     private int id;
     private String modalidade;
     private String orgao_concedente;
@@ -21,10 +32,11 @@ public class Convenios implements Parcelable{
     private  String data_publicacao;
     private  String situacao;
     private  String proponente;
-
+    private String link_proponente;
     public Convenios(){
 
     }
+
     public Convenios(Parcel in) {
         id = in.readInt();
         modalidade = in.readString();
@@ -40,21 +52,16 @@ public class Convenios implements Parcelable{
         data_publicacao = in.readString();
         situacao = in.readString();
         proponente = in.readString();
+        link_proponente = in.readString();
     }
 
-    public static final Creator<Convenios> CREATOR = new Creator<Convenios>() {
-        @Override
-        public Convenios createFromParcel(Parcel in) {
-            return new Convenios(in);
-        }
+    public String getLink_proponente() {
+        return link_proponente;
+    }
 
-        @Override
-        public Convenios[] newArray(int size) {
-            return new Convenios[size];
-        }
-    };
-
-
+    public void setLink_proponente(String link_proponente) {
+        this.link_proponente = link_proponente;
+    }
 
     public int getId() {
         return id;
@@ -189,5 +196,6 @@ public class Convenios implements Parcelable{
         dest.writeString(data_publicacao);
         dest.writeString(situacao);
         dest.writeString(proponente);
+        dest.writeString(link_proponente);
     }
 }

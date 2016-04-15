@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context="com.cidadaoandroid.fragments.AltereLocal">
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:iiv_color="@color/primary"
+        app:iiv_icon="faw_map_marker" />
+
+    <AutoCompleteTextView
+        android:id="@+id/auto_estado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/image"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/image"
+        android:background="@drawable/bid_pin"
+        android:gravity="center"
+        android:hint="Estado"
+        android:textColorHint="@color/primary" />
+
+    <AutoCompleteTextView
+        android:id="@+id/auto_municipio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bid_pin"
+        android:gravity="center"
+        android:hint="Municipio"
+        android:textColorHint="@color/primary" />
+
+    <Button
+        android:id="@+id/bt_muda"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/auto_municipio"
+        android:layout_margin="30dp"
+        android:background="@drawable/bt_accent"
+        android:text="Salvar"
+        android:textColor="@color/primary"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

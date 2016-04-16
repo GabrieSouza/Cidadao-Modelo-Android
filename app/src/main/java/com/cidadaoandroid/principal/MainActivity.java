@@ -7,10 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 
 import com.cidadaoandroid.R;
 import com.cidadaoandroid.entidades.Convenios;
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements BuscaInter, IdPro
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,13 +74,47 @@ public class MainActivity extends AppCompatActivity implements BuscaInter, IdPro
         String json = getSharedPreferences("municipio", Context.MODE_PRIVATE).getString("municipios", "");
         Type listType = new TypeToken<ArrayList<Municipio>>() {
         }.getType();
-        ArrayList<Municipio> obj = gson.fromJson(json, listType);
+        final ArrayList<Municipio> obj = gson.fromJson(json, listType);
 
-        List<Municipio> municipios = obj;
+        final List<Municipio> municipios = obj;
         String cidade = getSharedPreferences("municipio", Context.MODE_PRIVATE).getString("cidade", "");
 
         municipio = achaMunicipio(municipios, cidade);
 
+        final String[] nomesCidades = new String[obj.size()];
+        for (int i = 0; i < obj.size(); i++) {
+            nomesCidades[i] = obj.get(i).getNome();
+        }
+
+        final LinearLayout llPesquisa = (LinearLayout) findViewById(R.id.ll_pesquisa);
+        final AutoCompleteTextView completeTextView = (AutoCompleteTextView) findViewById(R.id.pesquisa);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, nomesCidades);
+        completeTextView.setAdapter(adapter);
+
+        completeTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                for (int i = 0; i < nomesCidades.length; i++) {
+                    if (SplashActivity.tiraAcento(completeTextView.getText().toString()).equals(SplashActivity.tiraAcento(nomesCidades[i]))) {
+                        convenios = new ArrayList<>();
+                        new TarefaIdProp(MainActivity.this, MainActivity.this).execute(String.valueOf(obj.get(i).getId()));
+                        //string_municipio = String.valueOf(municipios.get(i).getId());
+                        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(completeTextView.getWindowToken(), 0);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         // Log.e("IDP", String.valueOf(municipio.getId_proponentes().size()));
 
 
@@ -110,18 +150,23 @@ public class MainActivity extends AppCompatActivity implements BuscaInter, IdPro
                         switch (position) {
                             case 2:
                                 new TarefaIdProp(MainActivity.this, MainActivity.this).execute(String.valueOf(municipio.getId()));
+                                llPesquisa.setVisibility(View.VISIBLE);
                                 break;
                             case 4:
                                 fragment = new Perfil();
+                                llPesquisa.setVisibility(View.GONE);
                                 break;
                             case 6:
                                 fragment = new AltereLocal();
+                                llPesquisa.setVisibility(View.GONE);
                                 break;
                             case 8:
                                 fragment = new Cadastro();
+                                llPesquisa.setVisibility(View.GONE);
                                 break;
                             case 10:
                                 fragment = new Sobre();
+                                llPesquisa.setVisibility(View.GONE);
                                 break;
                         }
 
@@ -150,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements BuscaInter, IdPro
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

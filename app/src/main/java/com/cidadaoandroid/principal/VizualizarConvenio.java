@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.cidadaoandroid.R;
@@ -91,5 +92,19 @@ public class VizualizarConvenio extends AppCompatActivity {
         int animationDuration = 2500; // 2500ms = 2,5s
         percent.setText(perc + "%");
         circularProgressBar.setProgressWithAnimation(perc, animationDuration);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //System.err.println(item.getItemId());
+        Log.e("ID", String.valueOf(item.getItemId()));
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

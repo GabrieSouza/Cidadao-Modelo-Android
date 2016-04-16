@@ -175,6 +175,7 @@ public class Convenios implements Parcelable{
         this.proponente = proponente;
     }
 
+
     @Override
     public int describeContents() {
         return 0;

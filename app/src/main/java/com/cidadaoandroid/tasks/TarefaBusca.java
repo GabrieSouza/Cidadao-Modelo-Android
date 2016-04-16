@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 /**
  * Created by GabrielSouza on 13/04/2015.
  */
-public class TarefaBusca extends AsyncTask<String, Void, ArrayList<Convenios>> {
+public class TarefaBusca extends AsyncTask<String, Integer, ArrayList<Convenios>> {
 
     private static final String TAG = "LOGG";
     private Activity context;
@@ -116,7 +116,7 @@ public class TarefaBusca extends AsyncTask<String, Void, ArrayList<Convenios>> {
         dialog.setTitle("Carregando Convenios");
         dialog.setMessage("espere um pouco");
         dialog.setCancelable(false);
-        dialog.setIndeterminate(true);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.show();
     }
 
@@ -125,8 +125,12 @@ public class TarefaBusca extends AsyncTask<String, Void, ArrayList<Convenios>> {
 
         //convenios = findAllItems();
         Log.e("LINK1", String.valueOf(params.length));
+
+        dialog.setMax(params.length);
         for (int i = 0; i < params.length; i++) {
             String auxId = "id_proponente=" + params[i];
+            publishProgress(i);
+            //publishProgress((int) ((i / (float) params.length) * 100));
             convenios.addAll(lerXML(auxId));
         }
         Log.e("NUMERO", String.valueOf(convenios.size()));
@@ -162,6 +166,14 @@ public class TarefaBusca extends AsyncTask<String, Void, ArrayList<Convenios>> {
             Log.e("dates",convenios.get(i).getData_fim_vigencia());
         }
         return convenios;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        Log.e("Progress", String.valueOf(values[0]));
+        this.dialog.setMessage("Carregando convênios de proponentes");
+        this.dialog.setProgress(values[0]);
     }
 
     @Override
